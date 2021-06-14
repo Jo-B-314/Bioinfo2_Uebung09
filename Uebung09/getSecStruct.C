@@ -1,4 +1,5 @@
 #include "getSecStruct.h"
+#include "Matrix.h"
 #include <vector>
 #include <map>
 #include <tuple>
@@ -80,26 +81,41 @@ int main(int argc, char *argv[])
 			system.apply(fragment_db.add_hydrogens);
 			system.apply(fragment_db.build_bonds);
 
-			map<size_t, tuple<char, char>> type_map;
 			if (system.getProtein(0))
 			{
 				//we want to iterate over every amino acid
 				Protein* protein = system.getProtein(0);
 				auto res_it = protein->beginResidue();
-				map<size_t, tuple<char, int>> type_map;
-				size_t map_length = 0;
+                Matrix matrix (20, 30);
 				for(; + res_it; res_it ++) {
 					if (res_it->isAminoAcid()) {
-						//find contacts of amino acids 
-						//(bond between both Calpha < 7 A)
-						//map one letter amino acid with index for matrix
 						auto name = Peptides::OneLetterCode(res_it->getName());
-						//count bonds
-						int bonds = 0;
-						std::tuple<char, int> tuple(name, bonds);
-						type_map[map_length] = tuple;
-					}
-					map_length++;
+						/*
+                         * Alanine  A   0
+                         * Glycine  G   1
+                         * Valine   V   2
+                         * Isoleucine I 3
+                         * Leucine  L   4
+                         * Methionin M  5
+                         * Prolin   P   6
+                         * Serine   S   7
+                         * Threonine T  8
+                         * Cysteine  C  9
+                         * Phenylalanine F 10
+                         * Tyrosine Y   11
+                         * Tryptophan W 12
+                         * Lysine   K   13
+                         * Arginine R   14
+                         * Histedine H  15
+                         * Aspartate D  16
+                         * Glutamate E  17
+                         * Aspargine N  18
+                         * Glutamine Q  19
+                         */
+                        //switch case mit Namen, über alle AS des Proteins iterieren(check auf bond) -1
+                        //matrix mit 0 initialisieren (in matrix.h), mit anzahl kontakte füllen
+                        //matrix_E mit energie /threading folie 21)
+                        //vorlesungsslides häufigste kontakte
 
 				}
 			}

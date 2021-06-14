@@ -56,6 +56,7 @@ add_library(Uebung01 SHARED
         Test.hpp
         Test.cpp
 		getSecStruct.h
+		Matrix.h
 )
 
 target_link_libraries(Uebung01 BALL ${Boost_LIBRARIES})
