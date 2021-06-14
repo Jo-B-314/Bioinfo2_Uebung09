@@ -25,15 +25,6 @@ public:
      */
     int getValue(int i, int j);
     
-    /**
-     * returns the number of rows
-     */
-    size_t getRowNum();
-    
-    /**
-     * returns the number of columns
-     */
-    size_t getColumnNum();
     
 private:
     
