@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
 		cerr << "No known flag. Use -h or --help to open the help menu.\n";
 		return 1;
 	}
-	ofstream output;
+	/*ofstream output;
 	output.open("../data.txt");
 	output << "xi-6\t"
 		   << "xi-5\t"
@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
 		   << "xi+5\t"
 		   << "xi+6\t"
 		   << "si\t"
-		   << "svm\n";
+		   << "svm\n";*/
 	//we need our last column to train our svm in the R program
 	path pfad(argv[2]);
 	directory_iterator end_dir_it;
@@ -83,68 +83,24 @@ int main(int argc, char *argv[])
 			map<size_t, tuple<char, char>> type_map;
 			if (system.getProtein(0))
 			{
-				//now we want to compute the secondary structure
-				SecondaryStructureProcessor struct_proc;
-				system.apply(struct_proc);
-				Protein *protein = system.getProtein(0);
+				//we want to iterate over every amino acid
+				Protein* protein = system.getProtein(0);
+				auto res_it = protein->beginResidue();
+				map<size_t, tuple<char, int>> type_map;
 				size_t map_length = 0;
-				SecondaryStructureIterator sit = protein->beginSecondaryStructure();
-				for (; + sit; sit++)
-				{
-					char type;
-					switch (sit->getType())
-					{
-					case SecondaryStructure::HELIX:
-						type = 'H';
-						break;
-					case SecondaryStructure::STRAND:
-						type = 'S';
-						break;
-					case SecondaryStructure::TURN:
-					case SecondaryStructure::COIL:
-						type = 'L';
-						break;
-					default:
-						type = 'U';
-						break;
+				for(; + res_it; res_it ++) {
+					if (res_it->isAminoAcid()) {
+						//find contacts of amino acids 
+						//(bond between both Calpha < 7 A)
+						//map one letter amino acid with index for matrix
+						auto name = Peptides::OneLetterCode(res_it->getName());
+						//count bonds
+						int bonds = 0;
+						std::tuple<char, int> tuple(name, bonds);
+						type_map[map_length] = tuple;
 					}
-					int i = 0;
-					for (auto re_it = sit->beginResidue(); + re_it; re_it++)
-					{
-						if (re_it->isAminoAcid())
-						{
-							std::tuple<char, char> tuple(Peptides::OneLetterCode(re_it->getName()), type);
-							type_map[map_length + i] = tuple;
-							i++;
-						}
-					}
-					map_length += i;
-				}
-				for (int i = 0; i < (int)map_length; i++)
-				{
-					if (i >= 6 && i < (int)map_length - 6)
-					{
-						output << get<0>(type_map[i - 6]) << "\t";
-						output << get<0>(type_map[i - 5]) << "\t";
-						output << get<0>(type_map[i - 4]) << "\t";
-						output << get<0>(type_map[i - 3]) << "\t";
-						output << get<0>(type_map[i - 2]) << "\t";
-						output << get<0>(type_map[i - 1]) << "\t";
-						output << get<0>(type_map[i]) << "\t";
-						output << get<0>(type_map[i + 1]) << "\t";
-						output << get<0>(type_map[i + 2]) << "\t";
-						output << get<0>(type_map[i + 3]) << "\t";
-						output << get<0>(type_map[i + 4]) << "\t";
-						output << get<0>(type_map[i + 5]) << "\t";
-						output << get<0>(type_map[i + 6]) << "\t";
-						output << get<1>(type_map[i]) << "\t";
-						if (get<1>(type_map[i]) == 'H') {
-							output << 1;
-						} else {
-							output << 0;
-						}
-						output << endl;
-					}
+					map_length++;
+
 				}
 			}
 		}
