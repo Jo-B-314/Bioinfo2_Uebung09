@@ -24,6 +24,8 @@ public:
      * returns the value at pos Dij
      */
     int getValue(int i, int j);
+
+    void initialize(int size_s, int size_p);
     
     
 private:
@@ -47,6 +49,14 @@ void Matrix::setValue(int i, int j, int value) {
 
 int Matrix::getValue(int i, int j) {
     return matrix_[i][j];
+}
+
+void Matrix::initialize(int size_s, int size_p) {
+    for(int i =0; i < size_p; i++) {
+        for (int j = 0; j < size_s; j++) {
+            matrix_[i][j] = 0;
+        }
+    }
 }
 
 #endif
