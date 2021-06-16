@@ -87,25 +87,26 @@ int main(int argc, char *argv[])
 				Protein* protein = system.getProtein(0);
 				auto res_it = protein->beginResidue();
                 Matrix matrix (20, 30);
+				matrix.initialize(20, 30);
 				for(; + res_it; res_it ++) {
 					if (res_it->isAminoAcid()) {
 						auto name = Peptides::OneLetterCode(res_it->getName());
 						/*
-                         * Alanine  A   0
-                         * Glycine  G   1
-                         * Valine   V   2
+                         * Alanine   A  0
+                         * Glycine   G  1
+                         * Valine    V  2
                          * Isoleucine I 3
-                         * Leucine  L   4
+                         * Leucine   L  4
                          * Methionin M  5
-                         * Prolin   P   6
-                         * Serine   S   7
+                         * Prolin    P  6
+                         * Serine    S  7
                          * Threonine T  8
                          * Cysteine  C  9
                          * Phenylalanine F 10
-                         * Tyrosine Y   11
+                         * Tyrosine  Y  11
                          * Tryptophan W 12
-                         * Lysine   K   13
-                         * Arginine R   14
+                         * Lysine    K  13
+                         * Arginine  R  14
                          * Histedine H  15
                          * Aspartate D  16
                          * Glutamate E  17
@@ -114,8 +115,81 @@ int main(int argc, char *argv[])
                          */
                         //switch case mit Namen, über alle AS des Proteins iterieren(check auf bond) -1
                         //matrix mit 0 initialisieren (in matrix.h), mit anzahl kontakte füllen
-                        //matrix_E mit energie /threading folie 21)
+                        //matrix_E mit energie /threading (folie 21)
                         //vorlesungsslides häufigste kontakte
+						auto a_iti = res_iti->beginAtom();
+						Atom N;
+						Atom C_alpha;
+						//not sure if this works, same idea as Uebung07
+						if(a_iti->getName() == 'N') {
+							N = *(a_iti);
+							C_alpha = n.getPartnerAtom(1);
+						}
+						//check auf weitere C_alphas im radius 7 A
+						//falls ja, dann switch case 
+						switch(Peptides::OneLetterCode(res_it->getName())) {
+							case 'A':
+								//check for bond before increasing matrix
+								matrix[0] += 1;
+								break;
+							case 'G':
+								matrix[1] += 1;
+								break;
+							case 'V':
+								matrix[2] += 1;
+								break;
+							case 'I':
+								matrix[3] += 1;
+								break;
+							case 'L':
+								matrix[4] += 1;
+								break;
+							case 'M':
+								matrix[5] += 1;
+								break;
+							case 'P':
+								matrix[6] += 1;
+								break;
+							case 'S':
+								matrix[7] += 1;
+								break;
+							case 'T':
+								matrix[8] += 1;
+								break;
+							case 'C':
+								matrix[9] += 1;
+								break;
+							case 'F':
+								matrix[10] += 1;
+								break;
+							case 'Y':
+								matrix[11] += 1;
+								break;
+							case 'W':
+								matrix[12] += 1;
+								break;
+							case 'K':
+								matrix[13] += 1;
+								break;
+							case 'R':
+								matrix[14] += 1;
+								break;
+							case 'H':
+								matrix[15] += 1;
+								break;
+							case 'D':
+								matrix[16] += 1;
+								break;
+							case 'E':
+								matrix[17] += 1;
+								break;
+							case 'N':
+								matrix[18] += 1;
+								break;
+							case 'Q':
+								matrix[19] += 1;
+								break;
+						}
 
 				}
 			}
