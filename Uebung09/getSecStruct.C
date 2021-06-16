@@ -255,7 +255,8 @@ int main(int argc, char *argv[])
 			if ((Na*Nk) != 0) {
 				matrix2.setValue(i, j, ((float)matrix.getValue(i, j) * N)/(Na*Nk));
 			} else {
-				matrix2.setValue(i, j, ((float)matrix.getValue(i, j) * N));
+				//matrix2.setValue(i, j, ((float)matrix.getValue(i, j) * N));
+				matrix2.setValue(i,j,-1);
 			}
 		}
 	}
@@ -274,6 +275,38 @@ int main(int argc, char *argv[])
 		cout << endl;
 	}
 	//now we come to c)
-	
+	Matrix matrix_scoring(21, poss_contacts);
+	//we fill our scoringmatrix
+	for (int i = 0; i < 21; i++) {
+		for (int j = 0; j < poss_contacts; j++) {
+			int res = matrix2.getValue(i,j);
+			if (res == -1 || res == 0) {
+				matrix_scoring.setValue(i, j, -500);
+			} else if (res != 0) {
+				matrix_scoring.setValue(i, j, std::log(res));
+			} else {
+				matrix_scoring.setValue(i, j, 500);
+			}
+		}
+
+	}
+
+	//not sure if we need to print the scoring_matrix
+
+	/*cout << " ";
+	for (int j = 0; j < poss_contacts; j++) {
+		cout << j << " ";
+	}
+	cout << endl;
+	for (int i = 0; i < 21; i++)
+	{
+		cout << getAAName(i) << " ";
+		for (int j = 0; j < poss_contacts; j++)
+		{
+			cout << matrix_scoring.getValue(i, j) << " ";
+		}
+		cout << endl;
+	}*/
+
 	return 0;
 }
