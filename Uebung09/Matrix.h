@@ -25,7 +25,11 @@ public:
      */
     int getValue(int i, int j);
 
-    void initialize(int size_s, int size_p);
+    /**
+     * resizes the matrix
+     */
+    void resize(int new_p);
+
     
     
 private:
@@ -35,28 +39,39 @@ private:
 
 Matrix::Matrix(int size_s, int size_p) {
     matrix_.resize(size_p);
-    //with resize we have something in our arrays so we have no undefined behavior in getValue
+    //we initialize our Matrix with zeros
     for (int i = 0; i < size_p; i++) {
         Matrix::Array a;
         a.resize(size_s);
+        for (int j = 0; j < size_s; j++) {
+            a[j] = 0;
+        }
         matrix_[i]=a;
     }
 }
 
+void Matrix::resize(int new_p) {
+    int old_p = (int) matrix_.size();
+    matrix_.resize(new_p);
+    for (int i = old_p; i < new_p; i++) {
+        Matrix::Array a;
+        int s = (int) matrix_[0].size();
+        a.resize(s);
+        for (int j = 0; j < s; j++) {
+            a[j] = 0;
+        }
+        matrix_[i] = a;
+    }
+}
+
 void Matrix::setValue(int i, int j, int value) {
-    matrix_[i][j] = value;
+    matrix_[j][i] = value;
 }
 
 int Matrix::getValue(int i, int j) {
-    return matrix_[i][j];
+    return matrix_[j][i];
 }
 
-void Matrix::initialize(int size_s, int size_p) {
-    for(int i =0; i < size_p; i++) {
-        for (int j = 0; j < size_s; j++) {
-            matrix_[i][j] = 0;
-        }
-    }
-}
+
 
 #endif

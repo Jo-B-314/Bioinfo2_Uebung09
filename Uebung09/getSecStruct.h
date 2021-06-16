@@ -117,4 +117,30 @@ void task_h (System system) {
 	}
 }
 
+char getAAName(int i) {
+	switch(i) {
+		case 0: return 'A';
+		case 1: return 'G';
+		case 2: return 'V';
+		case 3: return 'I';
+		case 4: return 'L';
+		case 5: return 'M';
+		case 6: return 'P';
+		case 7: return 'S';
+		case 8: return 'T';
+		case 9: return 'C';
+		case 10: return 'F';
+		case 11: return 'Y';
+		case 12: return 'W';
+		case 13: return 'K';
+		case 14: return 'R';
+		case 15: return 'H';
+		case 16: return 'D';
+		case 17: return 'E';
+		case 18: return 'N';
+		case 19: return 'Q';
+		default: return 'U';
+	}
+}
+
 #endif

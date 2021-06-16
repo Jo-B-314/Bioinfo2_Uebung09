@@ -24,3 +24,4 @@ add_library(test_driver main_test.cpp)
 # Zeile für neue Tests einfach kopieren und anpassen.
 add_gtest(TestSuite1_tests LIBRARIES Uebung01 BALL)
 add_gtest(getSecStruct_test LIBRARIES Uebung01 BALL)
+add_gtest(matrix_test LIBRARIES Uebung01 BALL)
