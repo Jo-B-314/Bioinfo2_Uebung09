@@ -237,29 +237,39 @@ int main(int argc, char *argv[])
 		}
 		cout << endl;
 	}
-	//now a) is finished lets start with b)
+	//now a) is finished lets start with b) and c)
+	//we don't seperate b) and c) because of a better perfomance
 	//for each AA we compute how often it was seen
+	Matrix matrix_scoring(21, poss_contacts);
 	Matrix matrix2(21, poss_contacts);
 	for (int i = 0; i < 21; i++) {
 		int Na = 0;
 		//Na = times we found this aa
 		for (int j = 0; j < poss_contacts; j++) {
-			Na += matrix.getValue(i,j);
+			Na = Na + matrix.getValue(i,j);
 		}
 		//Nk = times we found an aa with j contacts
 		for (int j = 0; j < poss_contacts; j++) {
 			int Nk = 0;
 			for (int i2 = 0; i2 < 21; i2++){
-				Nk += matrix.getValue(i2, j);
+				//we take every value in this column
+				Nk = Nk + matrix.getValue(i2, j);
 			}
 			if ((Na*Nk) != 0) {
 				matrix2.setValue(i, j, ((float)matrix.getValue(i, j) * N)/(Na*Nk));
+				if (matrix2.getValue(i,j) != 0) {
+					matrix_scoring.setValue(i, j, -1 * std::log(matrix2.getValue(i,j)));
+				} else {
+					matrix_scoring.setValue(i, j, 500);
+				}
 			} else {
-				//matrix2.setValue(i, j, ((float)matrix.getValue(i, j) * N));
+				//if we divide by zero we set the value to -1
 				matrix2.setValue(i,j,-1);
+				matrix_scoring.setValue(i, j, -500);
 			}
 		}
 	}
+	//matrixb
 	cout << " ";
 	for (int j = 0; j < poss_contacts; j++) {
 		cout << j << " ";
@@ -274,26 +284,8 @@ int main(int argc, char *argv[])
 		}
 		cout << endl;
 	}
-	//now we come to c)
-	Matrix matrix_scoring(21, poss_contacts);
-	//we fill our scoringmatrix
-	for (int i = 0; i < 21; i++) {
-		for (int j = 0; j < poss_contacts; j++) {
-			int res = matrix2.getValue(i,j);
-			if (res == -1 || res == 0) {
-				matrix_scoring.setValue(i, j, -500);
-			} else if (res != 0) {
-				matrix_scoring.setValue(i, j, std::log(res));
-			} else {
-				matrix_scoring.setValue(i, j, 500);
-			}
-		}
-
-	}
-
-	//not sure if we need to print the scoring_matrix
-
-	/*cout << " ";
+	//matrixc
+	cout << " ";
 	for (int j = 0; j < poss_contacts; j++) {
 		cout << j << " ";
 	}
@@ -306,7 +298,7 @@ int main(int argc, char *argv[])
 			cout << matrix_scoring.getValue(i, j) << " ";
 		}
 		cout << endl;
-	}*/
+	}
 
 	return 0;
 }
