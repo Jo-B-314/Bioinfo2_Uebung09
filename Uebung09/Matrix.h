@@ -4,7 +4,6 @@
 #include <vector>
 
 class Matrix {
-  
 public: 
     
     using Array = std::vector<int>; //row
@@ -65,6 +64,7 @@ void Matrix::resize(int new_p) {
 }
 
 void Matrix::setValue(int i, int j, int value) {
+    //has to be like this because otherwise we get a segfault
     matrix_[j][i] = value;
 }
 
